@@ -1,7 +1,16 @@
-alert('PWNED');
-console.log("Origin:", location.origin);
-console.log("Is iframe:", window !== window.top);
-console.log("Parent:", window.parent);
-console.log("Chrome:", typeof chrome);
-console.log("Ethereum:", window.ethereum);
-console.log("OKX:", window.okxwallet);
+(function() {
+    const data = [
+        "PWNED",
+        "Origin: " + location.origin,
+        "Is iframe: " + (window !== window.top),
+        "Parent: " + (window.parent !== window ? "Accessible" : "Top Level"),
+        "Chrome: " + (typeof chrome !== 'undefined' ? 'Available' : 'Missing'),
+        "Ethereum: " + (window.ethereum ? 'Detected' : 'Not Found'),
+        "OKX: " + (window.okxwallet ? 'Detected' : 'Not Found')
+    ];
+
+    alert(data.join('\n'));
+    
+    // Also logging to console for easier debugging
+    console.table(data);
+})();
